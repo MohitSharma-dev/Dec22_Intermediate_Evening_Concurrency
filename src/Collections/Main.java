@@ -63,7 +63,14 @@ public class Main {
                 new Student(3, 24, "Vidushi", 85)
         ));
 
-        Collections.sort(students,new StudentAgeComparator());
+        Collections.sort(students,(o1, o2) -> {
+            if(o1.age == o2.age){
+                return 0;
+            } else if(o1.age < o2.age){
+                return -1;
+            }
+            return 1;
+        });
 
         System.out.println("Hey!");
     }
