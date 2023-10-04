@@ -35,12 +35,12 @@ public class Main {
         Integer ans = addition.operate(2 , 3);
 
         List<Integer> x = new ArrayList<>();
-        x.add(5);
+        x.add(2);
         x.add(1);
-        x.add(61);
         x.add(3);
-        x.add(13);
-        x.add(41);
+        x.add(4);
+        x.add(5);
+        x.add(6);
 
         Stream<Integer> s = x.stream();
         // filter
@@ -51,9 +51,15 @@ public class Main {
         // the stream again to do anything
 
         Stream<Integer> s1 = x.stream();
-        Optional<Integer> x4 = s1.filter((element) -> element % 2 == 0)
+        Optional<Integer> x4 = s1.filter((element) -> {
+                    System.out.println("Data in filter " + element);
+                    return element % 2 == 0;
+                })
                 .sorted()
-                .map((elem) -> elem * 5)
+                .map((elem) -> {
+                    System.out.println("Data in Map " + elem);
+                    return elem * 5;
+                })
                 .findFirst();
 
         if(x4.isPresent()){
@@ -83,3 +89,25 @@ public class Main {
         System.out.println(flattenedList);
     }
 }
+
+
+//// filter
+//for(int i = 0 -> size ){
+//    if(data is even){
+//        ans gets the data
+//        }
+//        }
+//// map
+// for(int i =0 -> ans.size()){
+//      data = data * 5;
+// }
+//// findfirst
+// return ans[0]
+
+// for(int i = 0 ;i < size; i++){
+// if (data is even){
+// return data * 5;
+// }
+// }
+
+
