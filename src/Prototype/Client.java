@@ -15,5 +15,7 @@ public class Client {
 
         Student sid = studentRegistry.get("apr21Batch").clone();
 
+        temp obj = new B();
+        obj.display();
     }
 }
