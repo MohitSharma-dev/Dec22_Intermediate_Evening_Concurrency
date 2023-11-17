@@ -22,6 +22,10 @@ public class WeatherData implements Subject {
 	}
 	
 	public void notifyObservers() {
+		//		currentDisplay.update();
+		//		statisticsDisplay.update();
+		//		forecastDisplay.update();
+		//      HeatIndex.display();
 		for (Observer observer : observers) {
 			observer.update(temperature, humidity, pressure);
 		}
