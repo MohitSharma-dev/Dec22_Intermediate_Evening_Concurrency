@@ -1,5 +1,8 @@
 package TicTacToe.controllers;
 
+import TicTacToe.exceptions.BotCountException;
+import TicTacToe.exceptions.PlayerCountDimensionMismatchException;
+import TicTacToe.exceptions.SymbolCountException;
 import TicTacToe.models.Game;
 import TicTacToe.models.GameState;
 import TicTacToe.models.Player;
@@ -10,7 +13,7 @@ import java.util.List;
 public class GameController {
     public Game startGame(int dimension,
                           List<Player> players,
-                          List<WinningStrategy> winningStrategies){
+                          List<WinningStrategy> winningStrategies) throws BotCountException, SymbolCountException, PlayerCountDimensionMismatchException {
         // we will create the game
         // we need to validate
 //        game.getbuilder().setplayers(...).setWinning(...);
