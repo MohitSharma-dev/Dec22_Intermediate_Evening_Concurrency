@@ -15,22 +15,48 @@ public class Game {
     private List<Player> players;
     private List<Move> moves;
     private GameState gameState;
-    private int nextMovePlayerIndex;
+    private int currentPlayerIndex;
     private Player winner;
-    private List<WinningStrategy> winningStrategies;
+    private WinningStrategy winningStrategy;
     public Board getBoard() {
         return board;
     }
 
     private Game(int dimension,
                  List<Player> players,
-                 List<WinningStrategy> winningStrategies){
+                 WinningStrategy winningStrategy){
         this.players = players;
-        this.winningStrategies = winningStrategies;
+        this.winningStrategy = winningStrategy;
         this.moves = new ArrayList<>();
-        this.nextMovePlayerIndex = 0;
+        this.currentPlayerIndex = 0;
         this.gameState = GameState.IN_PROGRESS;
         this.board = new Board(dimension);
+    }
+
+    public void displayBoard(){
+        this.board.displayBoard();
+    }
+
+    public void makeMove(){
+        // Figure out who's turn is it
+        Player currentPlayer = players.get(currentPlayerIndex);
+
+        // Ask that player to tell which cell to move on
+        Move move = currentPlayer.makeMove(board);
+        moves.add(move);
+
+        if(winningStrategy.checkWinner(move, board)){
+            setGameState(GameState.ENDED);
+            setWinner(currentPlayer);
+            return;
+        }
+        if(moves.size() == board.getSize() * board.getSize()){
+            // Game has drawn
+            setGameState(GameState.DRAW);
+            return;
+        }
+
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
     public static Builder getBuilder(){
@@ -39,7 +65,7 @@ public class Game {
     public static class Builder {
         private int dimension ;
         private List<Player> players;
-        private List<WinningStrategy> winningStrategies;
+        private WinningStrategy winningStrategy;
 
         public Builder setDimension(int dimension) {
             this.dimension = dimension;
@@ -51,8 +77,8 @@ public class Game {
             return this;
         }
 
-        public Builder setWinningStrategies(List<WinningStrategy> winningStrategies) {
-            this.winningStrategies = winningStrategies;
+        public Builder setWinningStrategy(WinningStrategy winningStrategy) {
+            this.winningStrategy = winningStrategy;
             return this;
 
         }
@@ -62,11 +88,11 @@ public class Game {
             return this;
         }
 
-        public Builder addWinningStrategy(WinningStrategy winningStrategy){
-            this.winningStrategies.add(winningStrategy);
-            return this;
-
-        }
+//        public Builder addWinningStrategy(WinningStrategy winningStrategy){
+//            this.winningStrategies.add(winningStrategy);
+//            return this;
+//
+//        }
         private void validateBotCount() throws BotCountException {
             int botCount = 0;
             for(Player p : players){
@@ -116,7 +142,7 @@ public class Game {
             return new Game(
                     this.dimension,
                     this.players,
-                    this.winningStrategies
+                    this.winningStrategy
             );
         }
     }
@@ -148,12 +174,12 @@ public class Game {
         this.gameState = gameState;
     }
 
-    public int getNextMovePlayerIndex() {
-        return nextMovePlayerIndex;
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 
-    public void setNextMovePlayerIndex(int nextMovePlayerIndex) {
-        this.nextMovePlayerIndex = nextMovePlayerIndex;
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
     }
 
     public Player getWinner() {
@@ -164,14 +190,28 @@ public class Game {
         this.winner = winner;
     }
 
-    public List<WinningStrategy> getWinningStrategies() {
-        return winningStrategies;
+    public WinningStrategy getWinningStrategy() {
+        return winningStrategy;
     }
 
-    public void setWinningStrategies(List<WinningStrategy> winningStrategies) {
-        this.winningStrategies = winningStrategies;
+    public void setWinningStrategy(WinningStrategy winningStrategy) {
+        this.winningStrategy = winningStrategy;
     }
 
+    public void undo(){
+        // Get the previous player
+        // Make sure only human players can do a undo
+        // For bot, just return
+        // sout do you want to undo
+        // yes or no
+        // if the player says, return
+        // Now actual undo logic begins
+        /*
+        1. Remove last entry from moves
+        2. update the board, update cell state and player
+        3. update the orderone winningstrategy maps (winningStrategy.handleUndo())
 
+         */
 
+    }
 }
